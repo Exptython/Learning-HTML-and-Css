@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CSS Card Animations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="title-container">
+        <h1 class="main-title">Advanced CSS Card Animations</h1>
+        <p class="subtitle">Four unique card animations showcasing cutting-edge CSS techniques including 3D transforms, liquid effects, glitch animations, and particle systems.</p>
+    </div>
+
+    <div class="cards-container">
+        <!-- Card 1: 3D Holographic Card -->
+        <div class="holographic-card">
+            <div class="holographic-inner">
+                <div class="holographic-front">
+                    <div class="holographic-content">
+                        <div class="holographic-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h2 class="card-title">3D Holographic Card</h2>
+                        <p class="card-description">Advanced 3D transform with holographic scanning effect and dual-sided content reveal.</p>
+                        <a href="#" class="card-button">Explore 3D</a>
+                    </div>
+                </div>
+                <div class="holographic-back">
+                    <div class="holographic-content">
+                        <div class="holographic-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h2 class="card-title">Back Side</h2>
+                        <p class="card-description">CSS preserve-3d, backface-visibility, and conic gradient animations.</p>
+                        <a href="#" class="card-button">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Liquid Morph Card -->
+        <div class="liquid-card">
+            <div class="liquid-surface"></div>
+            <div class="liquid-content">
+                <div class="holographic-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <h2 class="card-title">Liquid Morph Card</h2>
+                <p class="card-description">Dynamic liquid surface with clip-path morphing and animated water droplet effects.</p>
+                <a href="#" class="card-button">Morph Now</a>
+            </div>
+            <div class="liquid-drops" id="liquidDrops"></div>
+        </div>
+
+        <!-- Card 3: Glitch Neon Card -->
+        <div class="glitch-card">
+            <div class="glitch-overlay"></div>
+            <div class="glitch-content">
+                <div class="holographic-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h2 class="card-title">Glitch Neon Card</h2>
+                <p class="glitch-text">CYBER GLITCH EFFECT</p>
+                <p class="card-description">Neon glitch animations with scanning overlay and digital distortion effects on hover.</p>
+                <a href="#" class="card-button">Activate Glitch</a>
+            </div>
+        </div>
+
+        <!-- Card 4: Particle Orbit Card -->
+        <div class="orbit-card">
+            <div class="orbit-center">
+                <i class="fas fa-atom"></i>
+            </div>
+            <div class="orbit-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="orbit-content">
+                <h2 class="card-title">Particle Orbit Card</h2>
+                <p class="card-description">Orbiting particle system with gravitational center and smooth circular animations.</p>
+                <a href="#" class="card-button">View Orbit</a>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Generate liquid drops for Card 2
+        function createLiquidDrops() {
+            const liquidDrops = document.getElementById('liquidDrops');
+            const dropCount = 15;
+            
+            for (let i = 0; i < dropCount; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('drop');
+                
+                // Random properties
+                const left = Math.random() * 100;
+                const size = Math.random() * 10 + 5;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 2 + 1.5;
+                const colors = [
+                    'var(--neon-blue)',
+                    'var(--neon-pink)',
+                    'var(--neon-green)',
+                    'var(--neon-purple)'
+                ];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                drop.style.left = `${left}%`;
+                drop.style.width = `${size}px`;
+                drop.style.height = `${size}px`;
+                drop.style.background = color;
+                drop.style.animationDelay = `${delay}s`;
+                drop.style.animationDuration = `${duration}s`;
+                
+                liquidDrops.appendChild(drop);
+            }
+        }
+
+        // Interactive hover effects for holographic card
+        document.querySelectorAll('.holographic-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateY = ((x - centerX) / centerX) * 10;
+                const rotateX = ((centerY - y) / centerY) * 10;
+                
+                const inner = card.querySelector('.holographic-inner');
+                inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                const inner = card.querySelector('.holographic-inner');
+                inner.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Random glitch intensity for Card 3
+        document.querySelector('.glitch-card').addEventListener('mouseenter', function() {
+            const intensity = Math.random() * 0.3 + 0.1;
+            this.style.setProperty('--glitch-intensity', `${intensity}px`);
+        });
+
+        // Dynamic particle colors for Card 4
+        function updateParticleColors() {
+            const particles = document.querySelectorAll('.particle');
+            const colors = [
+                'var(--neon-blue)',
+                'var(--neon-pink)',
+                'var(--neon-green)',
+                'var(--neon-purple)'
+            ];
+            
+            particles.forEach(particle => {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = randomColor;
+                particle.style.boxShadow = `0 0 10px ${randomColor}`;
+            });
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            createLiquidDrops();
+            updateParticleColors();
+            
+            // Auto-update particle colors every 5 seconds
+            setInterval(updateParticleColors, 5000);
+            
+            // Add ripple effect to liquid card
+            const liquidCard = document.querySelector('.liquid-card');
+            liquidCard.addEventListener('click', (e) => {
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'var(--neon-blue)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.opacity = '0.7';
+                ripple.style.left = `${e.offsetX}px`;
+                ripple.style.top = `${e.offsetY}px`;
+                ripple.style.pointerEvents = 'none';
+                ripple.style.animation = 'ripple 1s linear forwards';
+                
+                liquidCard.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1000);
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
